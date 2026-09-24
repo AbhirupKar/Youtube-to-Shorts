@@ -134,39 +134,42 @@ All outputs go into `data/`. Create it first:
 mkdir data
 ```
 
+
 ### 🔹 Step 1 — Extract Audio
 
 ```cmd
-python src/step1_download_audio.py "https://www.youtube.com/watch?v=KjAI9r8tnOs"
+yt-dlp -x --audio-format mp3 --cookies-from-browser firefox "https://www.youtube.com/watch?v=KjAI9r8tnOs"
 ```
 
-**Output:** `data/source_audio.mp3`
+**Output:** `減輕利息推高房價！房市洗牌逐漸台北化！【精華版】 [KjAI9r8tnOs].mp3`
+
+Rename it for easier handling:
+
+```cmd
+ren "減輕利息推高房價！房市洗牌逐漸台北化！【精華版】 [KjAI9r8tnOs].mp3" source_audio.mp3
+```
 
 <details>
 <summary><b>⚠️ Getting HTTP 403 / "Sign in to confirm you're not a bot"?</b></summary>
 
-YouTube blocks unauthenticated downloads intermittently. Fix it by passing Firefox cookies:
+YouTube blocks unauthenticated downloads with **HTTP 403: Forbidden**. Passing Firefox cookies authenticates the request.
 
-1. Open **Firefox** and log into YouTube
-2. Re-run:
-
-```cmd
-python src/step1_download_audio.py "https://www.youtube.com/watch?v=KjAI9r8tnOs" --cookies-from-browser firefox
-```
-
-> Chrome/Edge cookies **do not work** on Windows due to encryption changes. Use Firefox.
+- Open **Firefox** and log into YouTube first
+- Chrome/Edge cookies **do not work** on Windows due to encryption changes
+- Firefox is the only browser that works reliably for this
 
 </details>
 
 ---
 
+
 ### 🔹 Step 2 — Transcribe
 
 ```cmd
-python src/step2_transcribe.py data/source_audio.mp3 --model medium --language zh
+python -m whisper source_audio.mp3 --model medium --language zh --output_format txt
 ```
 
-**Output:** `data/source_audio.txt`
+**Output:** `source_audio.txt`
 
 > ⏱️ **First run downloads ~1.4 GB** (the Whisper `medium` model) to `~/.cache/whisper/`. Subsequent runs load instantly from disk.
 >
@@ -177,12 +180,12 @@ python src/step2_transcribe.py data/source_audio.mp3 --model medium --language z
 ---
 
 ### 🔹 Step 3a — Generate Charts
-
+Create make_charts.py on your Desktop with the chart-generation code, then run:
 ```cmd
-python src/step3_make_charts.py
+python make_charts.py
 ```
 
-**Output:** `data/chart1_payments.png`, `data/chart2_tainan.png`, `data/chart3_burden.png`
+**Output:** `chart1_payments.png`, `chart2_tainan.png`, `chart3_burden.png`
 
 > 📊 Charts are rendered **from raw data** with matplotlib — no screenshots of the original source. This is both a legal requirement and a cost win.
 
