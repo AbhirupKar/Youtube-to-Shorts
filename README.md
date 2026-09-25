@@ -163,7 +163,7 @@ YouTube blocks unauthenticated downloads with **HTTP 403: Forbidden**. Passing F
 ---
 
 
-### 🔹 Step 2 — Transcribe
+### 🔹 Step 2 — Transcribe with Local Whisper
 
 ```cmd
 python -m whisper source_audio.mp3 --model medium --language zh --output_format txt
@@ -179,8 +179,94 @@ python -m whisper source_audio.mp3 --model medium --language zh --output_format 
 
 ---
 
-### 🔹 Step 3a — Generate Charts
-Create make_charts.py on your Desktop with the chart-generation code, then run:
+Here's the Script Rewriting step written in the same GitHub README format, ready to slot in between **Step 2 — Transcribe** and **Step 3a — Generate Charts**.
+
+---
+
+### 🔹 Step 3 — Script Rewriting
+
+**Tool**	Manual rewriting, AI-assisted (Deepseek)
+The transcript from Step 2 is copyrighted source material. Before it can become video content, it must be **rewritten into original scripts**.
+
+---
+
+#### 3.1 — Extract the Key Data Points
+
+Read the transcript and pull out the facts and figures worth building clips around. For this source:
+
+| Data Point | Value |
+|---|---|
+| Monthly payment during 5-year grace period (NT$10M loan) | ~NT$15,000 |
+| Monthly payment after grace, 35-year term | ~NT$36,000 |
+| Monthly payment after grace, 40-year term | ~NT$32,000 |
+| Tainan Anping 2024 price increase (after 新清安) | 12.8% YoY |
+| Tainan Anping pre-policy unit price | NT$300,000–350,000/ping |
+| Tainan Anping post-policy unit price | NT$400,000+/ping |
+| Taichung prime area unit price | NT$700,000–800,000/ping |
+| Taipei mortgage burden ratio | ~60% |
+| Taichung mortgage burden ratio | approaching 45% |
+
+---
+
+#### 3.2 — Write the Rewritten Scripts
+
+Create three script files on your Desktop:
+
+```cmd
+cd C:\Users\<you>\Desktop
+notepad Script1.txt
+notepad Script2.txt
+notepad Script3.txt
+```
+
+Each script should:
+- ✅ Use **completely different sentence structure** from the source
+- ✅ Include **verbal attribution** ("According to The Reporter's reporting...")
+- ✅ Contain one clear data point
+- ❌ **Not copy** any narration word-for-word
+
+<details>
+<summary><b>📝 Script 1 — The Grace Period Trap</b></summary>
+
+```
+According to reporting by The Reporter, Taiwan's housing subsidy program changed how people buy homes, but not always for the better. Here is the math. On a ten million NT dollar loan, the five year grace period costs about fifteen thousand a month. That sounds manageable. But once the grace period ends, the payment jumps to roughly thirty two thousand on a forty year term, or thirty six thousand on a thirty five year term. That is more than double. The program lowers the entry barrier, but it pushes the real burden further down the road.
+```
+
+</details>
+
+<details>
+<summary><b>📝 Script 2 — The Taipei-ification of Tainan</b></summary>
+
+```
+The Reporter's data shows that since the new housing policy launched, Tainan's Anping district saw a twelve point eight percent year over year price increase. Before the policy, new units there sold for three hundred thousand to three hundred fifty thousand NT dollars per ping. Now they are above four hundred thousand. Meanwhile, Taichung's prime areas have crossed seven hundred thousand to eight hundred thousand per ping, with some high floor units hitting nine hundred thousand. What used to be a central Taiwan price ceiling has been completely rewritten. The south is starting to look like Taipei.
+```
+
+</details>
+
+<details>
+<summary><b>📝 Script 3 — The Burden Ratio Reality Check</b></summary>
+
+```
+Here is a number that matters. According to The Reporter, Taipei's mortgage burden ratio sits at around sixty percent. That means the average buyer spends six out of every ten dollars of income on housing. Central and southern cities used to be far lower. Now they have crossed forty percent, and Taichung is approaching forty five percent. When you cross forty five percent, housing becomes a genuinely heavy load. The Reporter's conclusion is blunt. The subsidy solved interest, but it pushed up total prices. Without wage growth, the real problem does not go away.
+```
+
+</details>
+
+---
+
+#### 3.3 — Compliance Checklist
+
+| Requirement | Status |
+|---|---|
+| Sentence structure and wording rewritten | ✅ Each script is fully original phrasing |
+| Charts regenerated from scratch | ✅ matplotlib from raw data (Step 4) |
+| Source cited verbally | ✅ "According to The Reporter..." in every script |
+| No reproduction of original narration | ✅ No sentence copied word-for-word |
+
+---
+
+### 🔹 Step 4 — Generate Charts
+Create make_charts.py on your Desktop with the chart-generation code(uploaded), then run:
 ```cmd
 python make_charts.py
 ```
@@ -191,22 +277,20 @@ python make_charts.py
 
 ---
 
-### 🔹 Step 3b — Generate Voiceovers
-
-Edit the scripts in `scripts/` to your rewritten narration, then:
+### 🔹 Step 5 — Generate Voiceovers with Edge TTS
 
 ```cmd
-python src/step3_make_voiceover.py
+cd C:\Users\<you>\Desktop
+
+python -m edge_tts --file Script1.txt --voice en-US-GuyNeural --write-media voice1.mp3
+python -m edge_tts --file Script2.txt --voice en-US-GuyNeural --write-media voice2.mp3
+python -m edge_tts --file Script3.txt --voice en-US-GuyNeural --write-media voice3.mp3
 ```
 
-**Output:** `data/voice1.mp3`, `data/voice2.mp3`, `data/voice3.mp3`
+**Output:** `voice1.mp3`, `voice2.mp3`, `voice3.mp3`
 
 <details>
 <summary><b>🎙️ Want a different voice?</b></summary>
-
-```cmd
-python src/step3_make_voiceover.py --voice en-US-JennyNeural
-```
 
 | Voice | Description |
 |-------|-------------|
@@ -219,29 +303,41 @@ python src/step3_make_voiceover.py --voice en-US-JennyNeural
 
 ---
 
-### 🔹 Step 4 — Assemble Videos
+### 🔹 Step 6 — Assemble Videos with FFmpeg
 
+Make sure you're on the location where all six files (3 charts + 3 voiceovers) are present. In my case the files were stored in desktop:
 ```cmd
-python src/step4_assemble_video.py
+cd C:\Users\<you>\Desktop
+dir chart*.png voice*.mp3
 ```
 
-**Output:** `data/clip1.mp4`, `data/clip2.mp4`, `data/clip3.mp4` — vertical 1080×1920 shorts.
+Run the three assembly commands:
+
+```cmd
+ffmpeg -loop 1 -i chart1_payments.png -i voice1.mp3 -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest -vf "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=white" clip1.mp4
+
+ffmpeg -loop 1 -i chart2_tainan.png -i voice2.mp3 -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest -vf "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=white" clip2.mp4
+
+ffmpeg -loop 1 -i chart3_burden.png -i voice3.mp3 -c:v libx264 -tune stillimage -c:a aac -b:a 192k -pix_fmt yuv420p -shortest -vf "scale=1080:1920:force_original_aspect_ratio=decrease,pad=1080:1920:(ow-iw)/2:(oh-ih)/2:color=white" clip3.mp4
+```
+
+**Output:** `clip1.mp4`, `clip2.mp4`, `clip3.mp4` — vertical 1080×1920 shorts.
 
 ---
 
 ### 🔹 Deduplication Check
 
-Before reprocessing a URL, check the cache:
+Before reprocessing a URL, check the cache to avoid redundant work:
 
 ```cmd
-python src/dedup.py "https://www.youtube.com/watch?v=KjAI9r8tnOs"
+python dedup.py "https://www.youtube.com/watch?v=KjAI9r8tnOs"
 ```
 
 | First run | Second run |
 |-----------|------------|
 | `New video. Proceeding.` | `Already processed on <timestamp>. Skipping.` |
 
-This prevents redundant downloads, transcriptions, and generations.
+This prevents redundant downloads, transcriptions, and generations if you accidentally re-run the pipeline on the same source..
 
 ---
 
