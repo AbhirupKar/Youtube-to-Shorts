@@ -179,9 +179,6 @@ python -m whisper source_audio.mp3 --model medium --language zh --output_format 
 
 ---
 
-Here's the Script Rewriting step written in the same GitHub README format, ready to slot in between **Step 2 — Transcribe** and **Step 3a — Generate Charts**.
-
----
 
 ### 🔹 Step 3 — Script Rewriting
 
