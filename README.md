@@ -182,7 +182,7 @@ python -m whisper source_audio.mp3 --model medium --language zh --output_format 
 
 ### 🔹 Step 3 — Script Rewriting
 
-**Tool**	Manual rewriting, AI-assisted (Deepseek)
+**Tool:**	Manual rewriting, AI-assisted (Deepseek)
 The transcript from Step 2 is copyrighted source material. Before it can become video content, it must be **rewritten into original scripts**.
 
 ---
