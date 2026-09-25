@@ -330,7 +330,7 @@ ffmpeg -loop 1 -i chart3_burden.png -i voice3.mp3 -c:v libx264 -tune stillimage 
 Before reprocessing a URL, check the cache to avoid redundant work:
 
 ```cmd
-python dedup.py "https://www.youtube.com/watch?v=KjAI9r8tnOs"
+python -m dedup "https://www.youtube.com/watch?v=KjAI9r8tnOs"
 ```
 
 | First run | Second run |
