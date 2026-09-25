@@ -28,11 +28,11 @@ This pipeline takes **one YouTube video** and produces **multiple original short
 
 | Step | What Happens | Tool | Output |
 |------|--------------|------|--------|
-| **1** | Downloads audio from YouTube | `yt-dlp` + FFmpeg | `data/source_audio.mp3` |
-| **2** | Transcribes speech to text | Whisper `medium` (local) | `data/source_audio.txt` |
-| **3a** | Renders charts from raw data | matplotlib | `data/chart*.png` |
-| **3b** | Generates voiceover narration | Edge TTS | `data/voice*.mp3` |
-| **4** | Combines chart + voice into vertical video | FFmpeg | `data/clip*.mp4` |
+| **1** | Downloads audio from YouTube | `yt-dlp` + FFmpeg | `source_audio.mp3` |
+| **2** | Transcribes speech to text | Whisper `medium` (local) | `source_audio.txt` |
+| **3a** | Renders charts from raw data | matplotlib | `chart*.png` |
+| **3b** | Generates voiceover narration | Edge TTS | `voice*.mp3` |
+| **4** | Combines chart + voice into vertical video | FFmpeg | `clip*.mp4` |
 
 ---
 
@@ -127,12 +127,6 @@ python -m pip install -r requirements.txt
 ---
 
 ## ▶️ Running the Pipeline
-
-All outputs go into `data/`. Create it first:
-
-```cmd
-mkdir data
-```
 
 
 ### 🔹 Step 1 — Extract Audio
